@@ -83,12 +83,17 @@ function renderChips(data) {
   const ef = nodes.map((n) => n.flops && n.flops.exaflops).filter((v) => v != null);
   const efTotal = ef.reduce((a, b) => a + b, 0);
   const anchor = data.anchors[primary];
+  // The anchor bounds compute, not size. Surface the largest model in the run so a 5×-parameter win at
+  // 1.0× compute is visible at a glance rather than buried in a sorted column.
+  const pr = nodes.map((n) => n.params_ratio).filter((v) => v != null);
+  const maxPR = pr.length ? Math.max(...pr) : null;
   const chips = [
     ["nodes", nodes.length, ""],
     [`best ${primary}`, best != null ? best.toFixed(3) : "—", best != null && best > anchor ? "good" : ""],
     ["beating anchor", beat, beat > 0 ? "gold" : ""],
     ["kept", kept, ""],
     ["ExaFLOPs spent", ef.length ? efTotal.toFixed(1) : "—", ""],
+    ["biggest model (× baseline)", maxPR != null ? maxPR.toFixed(2) + "×" : "—", maxPR >= 1.5 ? "gold" : ""],
   ];
   document.getElementById("chips").innerHTML = chips.map((c) =>
     `<div class="chip"><b class="${c[2]}">${c[1]}</b><span>${c[0]}</span></div>`).join("");
@@ -163,6 +168,16 @@ function tableCols(data) {
       cell: (n) => fmtEF(n.flops && n.flops.exaflops) },
     { k: "iso", label: "iso-FLOP ×", num: true, get: (n) => n.flops && n.flops.iso_flop_ratio,
       cell: (n) => fmt(n.flops && n.flops.iso_flop_ratio, 2) },
+    // Sits IMMEDIATELY beside iso-FLOP ×, deliberately. The anchor has a size floor and NO ceiling: at equal
+    // compute, parameters are the free variable. A per-sequence AdaLN modulation MLP, a top-1 MoE, or a
+    // cheaper mixer (linear attention, hourglass) re-spending its saving all legitimately carry more. A win
+    // at 5× params and 1.0× compute is a consequence of the anchor, not a mechanism result — so it is shown,
+    // never left implicit. ≥1.5× is flagged; ≤0.5× (a shrunk recurrence) is dimmed, not warned.
+    { k: "params_ratio", label: "params ×", num: true, get: (n) => n.params_ratio,
+      cell: (n) => n.params_ratio == null ? "—"
+        : `<span class="${n.params_ratio >= 1.5 ? "warn" : n.params_ratio <= 0.5 ? "dim" : ""}"${
+            n.params_ratio >= 1.5 ? ' title="carries ≥1.5× the baseline\'s parameters at the same compute — the anchor permits this; read the win accordingly"' : ""
+          }>${n.params_ratio.toFixed(2)}×</span>` },
     { k: "runtime_s", label: "runtime", num: true, get: (n) => n.runtime_s, cell: (n) => fmtRuntime(n.runtime_s) },
     { k: "gpu", label: "GPU", num: false, get: (n) => (n.gpu && n.gpu.name) || "", cell: (n) => fmtGpu(n.gpu) },
     { k: "kept", label: "kept", num: false, get: (n) => (n.kept ? 1 : 0),

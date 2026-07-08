@@ -50,6 +50,12 @@
             <div class="sub">
               click a header to sort · gold = beats the ESM-2 anchor on that metric · every recorded metric is
               shown (no <code>composite</code> column: it is an alias for <code>ec.micro_auprc</code>)
+              <br>
+              <b>Read <code>params ×</code> next to <code>iso-FLOP ×</code>.</b> The anchor holds
+              <i>compute</i> equal (0.66 EF at 3B tokens) and has a size floor with <b>no ceiling</b> — at equal
+              FLOPs, parameters are the free variable. A per-sequence AdaLN modulation MLP, a top-1 MoE, or a
+              cheaper mixer re-spending its saving all legitimately carry more. A win at <code>1.00×</code>
+              compute and <code>5.0×</code> parameters is a consequence of the anchor, not a mechanism result.
             </div>
           </div>
         </div>
