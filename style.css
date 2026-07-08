@@ -1,0 +1,100 @@
+/* par autoresearch dashboard — static, offline, Arial. Light, readable theme.
+   Color roles kept in CSS vars so the plot JS can read them (getComputedStyle). */
+:root {
+  --bg: #f6f8fa;
+  --panel: #ffffff;
+  --ink: #1a1d23;
+  --muted: #616a76;
+  --border: #e2e6ec;
+  --grid: #eceff3;
+  --accent: #2563eb;   /* blue-600 */
+  --good: #16a34a;     /* green-600 running-best / ok */
+  --gold: #d4a017;     /* gold ring = beats anchor */
+  --anchor: #b45309;   /* amber-700 dashed anchor line */
+  --bad: #dc2626;      /* red-600 crashed/failed */
+  --gray: #94a3b8;     /* pruned / other */
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.45 Arial, Helvetica, "Segoe UI", Roboto, sans-serif;
+}
+
+header {
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+h1 { font-size: 18px; margin: 0; font-weight: 700; }
+h2 { font-size: 15px; margin: 0 0 4px; font-weight: 700; }
+.sub { color: var(--muted); font-size: 12px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.chips { display: flex; gap: 10px; flex-wrap: wrap; margin-left: auto; }
+.chip {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  padding: 6px 12px; min-width: 92px; text-align: left;
+}
+.chip b { display: block; font-size: 18px; line-height: 1.1; }
+.chip span {
+  color: var(--muted); font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.chip .good { color: var(--good); }
+.chip .gold { color: var(--gold); }
+
+section { padding: 14px 22px; }
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 14px;
+}
+.sec-head {
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.controls { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-left: auto; }
+label { color: var(--muted); font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }
+select {
+  background: var(--panel); color: var(--ink); border: 1px solid var(--border);
+  border-radius: 7px; padding: 6px 9px; font-size: 13px; font-family: inherit;
+}
+
+#metricPlot { height: 460px; }
+#treePlot { height: 560px; }
+
+.legend { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+.legend .item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.legend .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.legend .ring { width: 11px; height: 11px; border-radius: 50%; display: inline-block; background: transparent; border: 2.5px solid var(--gold); }
+.legend .cross { color: var(--bad); font-weight: 700; }
+.legend .line { width: 20px; height: 0; border-top: 2px solid var(--good); display: inline-block; }
+.legend .dash { width: 20px; height: 0; border-top: 2px dashed var(--anchor); display: inline-block; }
+
+.tabwrap { max-height: 46vh; overflow: auto; border: 1px solid var(--border); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+th {
+  color: var(--muted); font-weight: 700; position: sticky; top: 0;
+  background: var(--panel); cursor: pointer; user-select: none;
+}
+th.asc::after { content: " \25B4"; color: var(--accent); }
+th.desc::after { content: " \25BE"; color: var(--accent); }
+tbody tr:hover { background: var(--grid); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.beats { color: var(--gold); font-weight: 700; }
+.pill { font-size: 11px; padding: 1px 8px; border-radius: 10px; background: var(--grid); }
+.st-ok { color: var(--good); }
+.st-bad { color: var(--bad); }
+.st-other { color: var(--gray); }
+.yes { color: var(--good); font-weight: 700; }
+.no { color: var(--muted); }
+
+.empty {
+  padding: 40px; text-align: center; color: var(--muted); font-size: 14px;
+}
+.footer { padding: 8px 22px 28px; color: var(--muted); font-size: 11.5px; }
+code { background: var(--grid); padding: 1px 5px; border-radius: 4px; font-size: 11.5px; }

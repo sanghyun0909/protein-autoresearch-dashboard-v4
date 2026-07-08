@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>par autoresearch · 35M protein-representation search</title>
+  <meta name="description" content="Static dashboard for the par autoresearch search: per-trial metrics, the lineage tree, and a sortable node table. Fully offline." />
+  <!-- Vendored Plotly (relative path) — no CDN, no network at runtime. -->
+  <script src="plotly.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div>
+      <h1>par autoresearch — 35M SEQUENCE-ONLY protein-representation search</h1>
+      <div class="sub">
+        Each node is one sequence-only model the search wrote, scored on a frozen probe.
+        Primary = EC validation micro-AUPRC (GO / RepSP / contact recorded). Dashed line =
+        ESM-2 35M anchor (0.765). · <span id="srcNote">loading…</span>
+      </div>
+    </div>
+    <div class="chips" id="chips"></div>
+  </header>
+
+  <div id="app">
+    <!-- Metrics vs trial -->
+    <section>
+      <div class="card" id="metricSection">
+        <div class="sec-head">
+          <div>
+            <h2>Metrics vs trial</h2>
+            <div class="sub">node order (id) = commit / "trial" order · green step = running best · dashed = ESM-2 anchor</div>
+          </div>
+          <div class="controls">
+            <label>metric
+              <select id="metricSel"></select>
+            </label>
+          </div>
+        </div>
+        <div id="metricPlot"></div>
+      </div>
+    </section>
+
+    <!-- Lineage tree -->
+    <section>
+      <div class="card" id="treeSection">
+        <div class="sec-head">
+          <div>
+            <h2>Lineage tree</h2>
+            <div class="sub">laid out by depth (parent chain) · color = family · marker size ∝ composite</div>
+          </div>
+        </div>
+        <div id="treePlot"></div>
+        <div class="legend">
+          <span class="item"><span class="dot" style="background:#94a3b8"></span> circle = kept</span>
+          <span class="item"><span class="ring"></span> gold ring = beats anchor (0.765)</span>
+          <span class="item"><span class="cross">×</span> crashed / failed</span>
+          <span class="item">open circle = ok but not kept</span>
+          <span class="item">size ∝ composite</span>
+          <span class="item">color = family (legend below plot)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Node table -->
+    <section>
+      <div class="card" id="tableSection">
+        <div class="sec-head">
+          <div>
+            <h2>Nodes</h2>
+            <div class="sub">click a header to sort · gold = beats the 0.765 anchor (EC val micro-AUPRC)</div>
+          </div>
+        </div>
+        <div class="tabwrap">
+          <table id="nodeTable">
+            <thead><tr></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footer">
+    Static site — open <code>index.html</code> directly or serve the folder; works fully offline.
+    Regenerate data: <code>PYTHONPATH=$PWD/src "$PAR_PY" scripts/build_dashboard_site.py</code>.
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
