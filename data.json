@@ -1,11 +1,19 @@
 {
   "nodes": [],
-  "anchor": 0.765,
+  "metric_keys": [],
+  "primary": "ec.micro_auprc",
   "anchors": {
-    "composite": 0.765,
-    "go": 0.56,
-    "repsp": 0.534,
-    "contact": 0.101
+    "ec.micro_auprc": 0.765,
+    "ec.fmax": 0.734,
+    "ec.ce": 0.0065,
+    "go.fmax": 0.56,
+    "go.micro_auprc": 0.565,
+    "repsp.auprc": 0.534,
+    "contact.p_at_l": 0.22,
+    "contact.attn_p_at_l": 0.263
   },
-  "generated_at": "2026-07-08T12:17:30Z"
+  "lower_is_better": [
+    "ec.ce"
+  ],
+  "generated_at": "2026-07-08T16:19:12Z"
 }
