@@ -143,6 +143,45 @@
         "train_step_flops": 111073904640.0,
         "iso_flop_ratio": 0.9808
       }
+    },
+    {
+      "id": 4,
+      "parent": null,
+      "operator": "draft",
+      "family": "self-conditioning",
+      "status": "ok",
+      "kept": false,
+      "metrics": {
+        "ec.micro_auprc": 0.5277008186402272,
+        "ec.fmax": 0.5164263174151416,
+        "ec.ce": 0.010502016418093986,
+        "go.go_mf": 0.469872300643551,
+        "go.go_bp": 0.36390703077807146,
+        "go.go_cc": 0.39531925855846334,
+        "go.fmax": 0.4096995299933619,
+        "go.micro_auprc": 0.39981154398274005,
+        "repsp.auprc": 0.28167458419201896,
+        "repsp.max_f1": 0.3207224171873662,
+        "contact.p_at_l": 0.05483788052387055,
+        "contact.p_at_l5": 0.07782927940536515,
+        "contact.n_eval": 300.0
+      },
+      "n_params": 16890753.0,
+      "params_ratio": 0.508,
+      "tokens": 3001024512.0,
+      "steps": 2862.0,
+      "runtime_s": 9091.0339448452,
+      "gpu": {
+        "name": "NVIDIA A100 80GB PCIe",
+        "smi_index": 5,
+        "uuid": "31f248fd-5aa4-3d92-6f6c-18712acfda1c",
+        "matched": true
+      },
+      "flops": {
+        "exaflops": 0.6683,
+        "train_step_flops": 114052792320.0,
+        "iso_flop_ratio": 1.0071
+      }
     }
   ],
   "metric_keys": [
@@ -175,5 +214,5 @@
   "lower_is_better": [
     "ec.ce"
   ],
-  "generated_at": "2026-07-09T21:16:13Z"
+  "generated_at": "2026-07-09T21:39:19Z"
 }
