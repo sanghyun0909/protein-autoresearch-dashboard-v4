@@ -2340,6 +2340,47 @@
         "train_step_flops": 113247682560.0,
         "iso_flop_ratio": 1.0
       }
+    },
+    {
+      "id": 61,
+      "parent": null,
+      "operator": "draft",
+      "family": "fft-longconv-branch",
+      "status": "ok",
+      "kept": false,
+      "metrics": {
+        "ec.micro_auprc": 0.371868293991349,
+        "ec.fmax": 0.3520332071607124,
+        "ec.ce": 0.013067010873117454,
+        "go.go_mf": 0.35382890055543414,
+        "go.go_bp": 0.2971456362685137,
+        "go.go_cc": 0.3762562521717466,
+        "go.fmax": 0.3424102629985648,
+        "go.micro_auprc": 0.30966569524452975,
+        "repsp.auprc": 0.24553651632120832,
+        "repsp.max_f1": 0.29804958938723947,
+        "contact.p_at_l": 0.05329722920634909,
+        "contact.p_at_l5": 0.07647637024602033,
+        "contact.n_eval": 300.0,
+        "contact.attn_p_at_l": 0.08274976812427556,
+        "contact.attn_p_at_l5": 0.1354056912952509
+      },
+      "n_params": 35123232.0,
+      "params_ratio": 1.056,
+      "tokens": 3001024512.0,
+      "steps": 2862.0,
+      "runtime_s": 6860.104800224304,
+      "gpu": {
+        "name": "NVIDIA H100 NVL",
+        "smi_index": 6,
+        "uuid": "793692a4-c2bd-d006-d7ca-5d5a3cea72d0",
+        "matched": true
+      },
+      "flops": {
+        "exaflops": 0.6978,
+        "train_step_flops": 119087969280.0,
+        "iso_flop_ratio": 1.0516
+      }
     }
   ],
   "metric_keys": [
@@ -2372,5 +2413,5 @@
   "lower_is_better": [
     "ec.ce"
   ],
-  "generated_at": "2026-07-11T00:31:11Z"
+  "generated_at": "2026-07-11T00:38:09Z"
 }
