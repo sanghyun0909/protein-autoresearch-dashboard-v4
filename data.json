@@ -5667,6 +5667,47 @@
         "train_step_flops": 113247682560.0,
         "iso_flop_ratio": 1.0
       }
+    },
+    {
+      "id": 146,
+      "parent": 91,
+      "operator": "improve",
+      "family": "differential-decay-conv-motif",
+      "status": "ok",
+      "kept": false,
+      "metrics": {
+        "ec.micro_auprc": 0.5834546483533625,
+        "ec.fmax": 0.5505009388695598,
+        "ec.ce": 0.00953890159963616,
+        "go.go_mf": 0.5115310268654791,
+        "go.go_bp": 0.39889220522316315,
+        "go.go_cc": 0.41859027733762344,
+        "go.fmax": 0.4430045031420886,
+        "go.micro_auprc": 0.4394357267456725,
+        "repsp.auprc": 0.3094455994842203,
+        "repsp.max_f1": 0.33626991565135905,
+        "contact.p_at_l": 0.0800711008737361,
+        "contact.p_at_l5": 0.1148012187106994,
+        "contact.n_eval": 300.0,
+        "contact.attn_p_at_l": 0.11826199065865722,
+        "contact.attn_p_at_l5": 0.19246014773547157
+      },
+      "n_params": 34713504.0,
+      "params_ratio": 1.043,
+      "tokens": 3001024512.0,
+      "steps": 2862.0,
+      "runtime_s": 15108.122205734253,
+      "gpu": {
+        "name": "NVIDIA L40S",
+        "smi_index": 1,
+        "uuid": "97a28f52-029f-fd3f-284b-05bdb872dd76",
+        "matched": true
+      },
+      "flops": {
+        "exaflops": 0.679,
+        "train_step_flops": 115890094080.0,
+        "iso_flop_ratio": 1.0233
+      }
     }
   ],
   "metric_keys": [
@@ -5699,5 +5740,5 @@
   "lower_is_better": [
     "ec.ce"
   ],
-  "generated_at": "2026-07-12T16:52:32Z"
+  "generated_at": "2026-07-12T17:26:17Z"
 }
