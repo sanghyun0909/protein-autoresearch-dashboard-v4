@@ -5400,6 +5400,31 @@
         "train_step_flops": 118001715840.0,
         "iso_flop_ratio": 1.042
       }
+    },
+    {
+      "id": 139,
+      "parent": null,
+      "operator": "draft",
+      "family": "hard-residue-mining",
+      "status": "crashed",
+      "kept": false,
+      "metrics": {},
+      "n_params": null,
+      "params_ratio": null,
+      "tokens": null,
+      "steps": null,
+      "runtime_s": 8.056320667266846,
+      "gpu": {
+        "name": "NVIDIA H100 NVL",
+        "smi_index": 6,
+        "uuid": "793692a4-c2bd-d006-d7ca-5d5a3cea72d0",
+        "matched": true
+      },
+      "flops": {
+        "exaflops": 0.6746,
+        "train_step_flops": 115139051520.0,
+        "iso_flop_ratio": 1.0167
+      }
     }
   ],
   "metric_keys": [
@@ -5432,5 +5457,5 @@
   "lower_is_better": [
     "ec.ce"
   ],
-  "generated_at": "2026-07-12T14:57:54Z"
+  "generated_at": "2026-07-12T14:58:09Z"
 }
