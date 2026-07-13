@@ -24,6 +24,8 @@ const FAMILY_PALETTE = [
   "#2563eb", "#16a34a", "#d4a017", "#dc2626", "#7c3aed", "#0891b2",
   "#ea580c", "#db2777", "#65a30d", "#0d9488", "#4f46e5", "#b45309",
 ];
+// ESM-2 baseline reference lines, indexed small->large (violet ramp, distinct from the node/anchor colors).
+const BASELINE_RAMP = ["#c4b5fd", "#a78bfa", "#8b5cf6", "#7c3aed", "#5b21b6"];
 const familyColor = {};
 function colorForFamily(f) {
   if (!(f in familyColor)) familyColor[f] = FAMILY_PALETTE[Object.keys(familyColor).length % FAMILY_PALETTE.length];
@@ -70,6 +72,19 @@ async function loadData() {
     } catch (e) { /* try next */ }
   }
   return null;
+}
+
+// Optional: the OFFICIAL pretrained ESM-2 at several sizes through THIS same validation probe — the
+// reference scaling ladder the from-scratch search is measured against (scripts/anchor_esm2_allsizes.py).
+// Decoupled from the ledger-driven data.json: a static file the frontend overlays as reference lines, so
+// the live node-commit pipeline (build_dashboard_site.py) is untouched. Absent file -> no overlay (fine).
+async function loadBaselines() {
+  try {
+    const r = await fetch("baselines.json", { cache: "no-store" });
+    if (!r.ok) return null;
+    const b = await r.json();
+    return Array.isArray(b) ? b : null;
+  } catch (e) { return null; }
 }
 
 // ==== summary chips ==============================================================
@@ -128,13 +143,26 @@ function renderMetricPlot(data, key) {
   ];
 
   const shapes = [], anns = [];
+  const maxX = Math.max(1, ...nodes.map((n) => n.id));
   if (anchor != null) {
-    const maxX = Math.max(1, ...nodes.map((n) => n.id));
     shapes.push({ type: "line", x0: 0, x1: maxX, y0: anchor, y1: anchor,
       line: { color: COL.anchor, width: 1.6, dash: "dash" } });
     anns.push({ x: 0, y: anchor, text: `  ESM-2 35M anchor = ${anchor}`, showarrow: false,
       font: { size: 11, color: COL.anchor }, xanchor: "left", yanchor: "bottom" });
   }
+  // ESM-2 scaling baselines: the OFFICIAL pretrained ESM-2 at several sizes through THIS same probe — the
+  // reference ladder the search is measured against. Thin dotted reference lines with a small->large color
+  // ramp. The 35M rung IS the anchor line above, so its baseline entry (anchor:true) is skipped to avoid a
+  // duplicate. A baseline with no value for the selected metric is simply omitted.
+  (data.baselines || []).forEach((b, i) => {
+    const v = b && b.metrics ? b.metrics[key] : null;
+    if (b.anchor || v == null || !isFinite(v)) return;
+    const c = BASELINE_RAMP[Math.min(i, BASELINE_RAMP.length - 1)];
+    shapes.push({ type: "line", x0: 0, x1: maxX, y0: v, y1: v,
+      line: { color: c, width: 1.1, dash: "dot" } });
+    anns.push({ x: maxX, y: v, text: `${esc(b.label)} `, showarrow: false,
+      font: { size: 10, color: c }, xanchor: "right", yanchor: "bottom" });
+  });
 
   Plotly.react("metricPlot", traces, {
     paper_bgcolor: COL.panel, plot_bgcolor: COL.panel,
@@ -225,6 +253,7 @@ function wireTable(data, cols) {
 (async function main() {
   const data = await loadData();
   const srcNote = document.getElementById("srcNote");
+  if (data) data.baselines = await loadBaselines();  // optional ESM-2 scaling reference ladder
   if (!data) {
     document.getElementById("app").innerHTML =
       `<div class="empty">Could not load <code>data.json</code> or <code>mock_data.json</code>.<br>` +
