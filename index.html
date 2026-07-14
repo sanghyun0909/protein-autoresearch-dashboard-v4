@@ -16,8 +16,9 @@
       <div class="sub">
         Each node is one sequence-only model the search wrote, scored on a frozen probe at
         <b>iso-FLOP (0.6 EF) and iso-token (3B)</b>. Primary = EC validation micro-AUPRC; every other
-        metric is recorded, never ranked. Dashed line = ESM-2 35M anchor; dotted violet lines = the
-        OFFICIAL ESM-2 scaling ladder (8M–3B) through this same probe. · <span id="srcNote">loading…</span>
+        metric is recorded, never ranked. Dashed line = ESM-2 35M anchor; dotted violet = the OFFICIAL
+        ESM-2 scaling ladder (8M–3B) through this same probe; solid amber = OUR from-scratch scale-up
+        models. · <span id="srcNote">loading…</span>
       </div>
     </div>
     <div class="chips" id="chips"></div>
@@ -30,7 +31,7 @@
         <div class="sec-head">
           <div>
             <h2>Metrics vs trial</h2>
-            <div class="sub">node order (id) = commit / "trial" order · green step = running best · dashed = ESM-2 35M anchor · dotted violet = ESM-2 8M–3B baselines</div>
+            <div class="sub">node order (id) = commit / "trial" order · green step = running best · dashed = ESM-2 35M anchor · dotted violet = ESM-2 8M–3B ladder · solid amber = our scale-up models</div>
           </div>
           <div class="controls">
             <label>metric

@@ -26,6 +26,8 @@ const FAMILY_PALETTE = [
 ];
 // ESM-2 baseline reference lines, indexed small->large (violet ramp, distinct from the node/anchor colors).
 const BASELINE_RAMP = ["#c4b5fd", "#a78bfa", "#8b5cf6", "#7c3aed", "#5b21b6"];
+// OUR from-scratch scale-up markers — amber, deliberately distinct from the official ESM violet ladder.
+const OURS_COLOR = "#d97706";
 const familyColor = {};
 function colorForFamily(f) {
   if (!(f in familyColor)) familyColor[f] = FAMILY_PALETTE[Object.keys(familyColor).length % FAMILY_PALETTE.length];
@@ -150,18 +152,29 @@ function renderMetricPlot(data, key) {
     anns.push({ x: 0, y: anchor, text: `  ESM-2 35M anchor = ${anchor}`, showarrow: false,
       font: { size: 11, color: COL.anchor }, xanchor: "left", yanchor: "bottom" });
   }
-  // ESM-2 scaling baselines: the OFFICIAL pretrained ESM-2 at several sizes through THIS same probe — the
-  // reference ladder the search is measured against. Thin dotted reference lines with a small->large color
-  // ramp. The 35M rung IS the anchor line above, so its baseline entry (anchor:true) is skipped to avoid a
-  // duplicate. A baseline with no value for the selected metric is simply omitted.
-  (data.baselines || []).forEach((b, i) => {
+  // Reference ladder (data.baselines):
+  //  - kind "esm2": the OFFICIAL pretrained ESM-2 at several sizes through THIS same probe — the scaling
+  //    ladder the search is measured against. Thin dotted violet lines, small->large color ramp, labels at
+  //    the RIGHT. The 35M rung IS the dashed anchor line above, so its entry (anchor:true) is skipped here.
+  //  - kind "ours": OUR from-scratch scale-up models — amber SOLID lines, labels at the LEFT, so they read
+  //    as a distinct family from the official ESM points. A baseline with no value for the selected metric
+  //    is simply omitted.
+  let esmRung = 0;
+  (data.baselines || []).forEach((b) => {
     const v = b && b.metrics ? b.metrics[key] : null;
     if (b.anchor || v == null || !isFinite(v)) return;
-    const c = BASELINE_RAMP[Math.min(i, BASELINE_RAMP.length - 1)];
-    shapes.push({ type: "line", x0: 0, x1: maxX, y0: v, y1: v,
-      line: { color: c, width: 1.1, dash: "dot" } });
-    anns.push({ x: maxX, y: v, text: `${esc(b.label)} `, showarrow: false,
-      font: { size: 10, color: c }, xanchor: "right", yanchor: "bottom" });
+    if (b.kind === "ours") {
+      shapes.push({ type: "line", x0: 0, x1: maxX, y0: v, y1: v,
+        line: { color: OURS_COLOR, width: 1.8, dash: "solid" } });
+      anns.push({ x: 0, y: v, text: `◆ ${esc(b.label)} = ${fmt(v, 3)}  `, showarrow: false,
+        font: { size: 10, color: OURS_COLOR }, xanchor: "left", yanchor: "top" });
+    } else {
+      const c = BASELINE_RAMP[Math.min(esmRung++, BASELINE_RAMP.length - 1)];
+      shapes.push({ type: "line", x0: 0, x1: maxX, y0: v, y1: v,
+        line: { color: c, width: 1.1, dash: "dot" } });
+      anns.push({ x: maxX, y: v, text: `${esc(b.label)} `, showarrow: false,
+        font: { size: 10, color: c }, xanchor: "right", yanchor: "bottom" });
+    }
   });
 
   Plotly.react("metricPlot", traces, {

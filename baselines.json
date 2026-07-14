@@ -1,0 +1,84 @@
+[
+  {
+    "label": "ESM-2 8M",
+    "kind": "esm2",
+    "size": "8M",
+    "params": 7408960,
+    "anchor": false,
+    "metrics": {
+      "ec.micro_auprc": 0.6391744832746513,
+      "ec.fmax": 0.6117426454301281,
+      "ec.ce": 0.008265800320451391,
+      "go.fmax": 0.48373414878756743,
+      "go.micro_auprc": 0.48281774113129794,
+      "repsp.auprc": 0.42061850086229985,
+      "contact.p_at_l": 0.10528575450431626,
+      "contact.attn_p_at_l": 0.14635962960451004
+    }
+  },
+  {
+    "label": "ESM-2 35M",
+    "kind": "esm2",
+    "size": "35M",
+    "params": 33269280,
+    "anchor": true,
+    "metrics": {
+      "ec.micro_auprc": 0.7651297625269297,
+      "ec.fmax": 0.7327262540771928,
+      "ec.ce": 0.006535656768123317,
+      "go.fmax": 0.5575188406658292,
+      "go.micro_auprc": 0.5649739064670164,
+      "repsp.auprc": 0.5348546781817217,
+      "contact.p_at_l": 0.21981562235433103,
+      "contact.attn_p_at_l": 0.262752785235786
+    }
+  },
+  {
+    "label": "ESM-2 150M",
+    "kind": "esm2",
+    "size": "150M",
+    "params": 147728000,
+    "anchor": false,
+    "metrics": {
+      "ec.micro_auprc": 0.791553973510643,
+      "ec.fmax": 0.7513657446431191,
+      "ec.ce": 0.006446318009070269,
+      "go.fmax": 0.5909183706806913,
+      "go.micro_auprc": 0.5888358750795256,
+      "repsp.auprc": 0.5853518906385263,
+      "contact.p_at_l": 0.3305821983453088,
+      "contact.attn_p_at_l": 0.3705065673646719
+    }
+  },
+  {
+    "label": "ESM-2 650M",
+    "kind": "esm2",
+    "size": "650M",
+    "params": 649400320,
+    "anchor": false,
+    "metrics": {
+      "ec.micro_auprc": 0.8357738083480067,
+      "ec.fmax": 0.7981893767184199,
+      "ec.ce": 0.006153007531471511,
+      "go.fmax": 0.6435066220938749,
+      "go.micro_auprc": 0.6483050227209258,
+      "repsp.auprc": 0.7033904388685757,
+      "contact.p_at_l": 0.3823457861052564,
+      "contact.attn_p_at_l": 0.4631096046466954
+    }
+  },
+  {
+    "label": "ours: #129 (72M, scratch, 20B tok)",
+    "kind": "ours",
+    "params": 72000000,
+    "anchor": false,
+    "steps": 19074.0,
+    "tokens": 20000538624.0,
+    "metrics": {
+      "ec.micro_auprc": 0.6691584081438928,
+      "ec.fmax": 0.6459074935035795,
+      "go.fmax": 0.4982545409915408,
+      "repsp.auprc": 0.5189543714209194
+    }
+  }
+]
