@@ -91,5 +91,18 @@
       "go.fmax": 0.4982545409915408,
       "repsp.auprc": 0.5189543714209194
     }
+  },
+  {
+    "label": "ESM-2 35M (ours, scratch 20B)",
+    "kind": "ours",
+    "params": 33000000,
+    "steps": 19074.0,
+    "tokens": 20000538624.0,
+    "metrics": {
+      "ec.micro_auprc": 0.6086316457944014,
+      "ec.fmax": 0.5866418223699358,
+      "go.fmax": 0.4668737148272579,
+      "repsp.auprc": 0.4505247791352669
+    }
   }
 ]
