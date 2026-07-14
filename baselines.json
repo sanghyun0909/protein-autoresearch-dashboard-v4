@@ -68,6 +68,21 @@
     }
   },
   {
+    "label": "ESM-2 3B (official)",
+    "kind": "esm2",
+    "size": "3B",
+    "params": 2832400000,
+    "anchor": false,
+    "metrics": {
+      "ec.micro_auprc": 0.8645478317623192,
+      "ec.fmax": 0.8341518952742627,
+      "ec.ce": 0.0057514537263283864,
+      "go.fmax": 0.6853417305763435,
+      "go.micro_auprc": 0.6798853871120679,
+      "repsp.auprc": 0.7529137559766714
+    }
+  },
+  {
     "label": "#129 (ours, 72M, scratch 20B)",
     "kind": "ours",
     "params": 72000000,
