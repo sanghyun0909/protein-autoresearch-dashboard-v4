@@ -112,7 +112,7 @@ function renderChips(data) {
   const chips = [
     ["nodes", nodes.length, ""],
     [`best ${primary}`, best != null ? best.toFixed(3) : "—", best != null && best > anchor ? "good" : ""],
-    ["beating anchor", beat, beat > 0 ? "gold" : ""],
+    ["beating ESM-2 35M", beat, beat > 0 ? "gold" : ""],
     ["kept", kept, ""],
     ["ExaFLOPs spent", ef.length ? efTotal.toFixed(1) : "—", ""],
     ["biggest model (× baseline)", maxPR != null ? maxPR.toFixed(2) + "×" : "—", maxPR >= 1.5 ? "gold" : ""],
@@ -123,7 +123,6 @@ function renderChips(data) {
 
 // ==== metrics-vs-trial plot =====================================================
 function renderMetricPlot(data, key) {
-  const anchor = data.anchors ? data.anchors[key] : null;
   const lower = (data.lower_is_better || []).includes(key);
   const nodes = data.nodes;
   const okX = [], okY = [], okHov = [];
@@ -153,18 +152,10 @@ function renderMetricPlot(data, key) {
   const maxX = Math.max(1, ...nodes.map((n) => n.id));
   const baselines = data.baselines || [];
   const hasEsm = baselines.some((b) => b.kind === "esm2" && b.metrics && b.metrics[key] != null);
-  // The old single dashed anchor line is REDUNDANT once the official ladder is drawn (35M is one of its
-  // rungs); draw it only when there is no ESM ladder for this metric (backward compatible).
-  if (anchor != null && !hasEsm) {
-    shapes.push({ type: "line", x0: 0, x1: maxX, y0: anchor, y1: anchor,
-      line: { color: COL.anchor, width: 1.6, dash: "dash" } });
-    anns.push({ x: 0, y: anchor, text: `  ESM-2 35M anchor = ${anchor}`, showarrow: false,
-      font: { size: 11, color: COL.anchor }, xanchor: "left", yanchor: "bottom" });
-  }
   // Reference ladder (data.baselines) — provenance is the visual axis:
   //  - kind "esm2": the OFFICIAL pretrained ESM-2 at all sizes through THIS probe. ONE consistent DASHED
-  //    style, small->large violet ramp, labels at the RIGHT. The 35M rung is NOT special-cased — it is
-  //    drawn like every other official rung (it is the anchor semantically, same official-weights design).
+  //    style, small->large violet ramp, labels at the RIGHT. Every rung — including 35M — is drawn
+  //    IDENTICALLY (same dash, same color family, same weight, same label format); no rung is singled out.
   //  - kind "ours": OUR from-scratch scale-up runs. SOLID lines, distinct warm ramp, labels at the LEFT.
   //    A baseline with no value for the selected metric is simply omitted.
   let esmRung = 0, oursRung = 0;
@@ -231,7 +222,7 @@ function tableCols(data) {
     { k: "params_ratio", label: "params ×", num: true, get: (n) => n.params_ratio,
       cell: (n) => n.params_ratio == null ? "—"
         : `<span class="${n.params_ratio >= 1.5 ? "warn" : n.params_ratio <= 0.5 ? "dim" : ""}"${
-            n.params_ratio >= 1.5 ? ' title="carries ≥1.5× the baseline\'s parameters at the same compute — the anchor permits this; read the win accordingly"' : ""
+            n.params_ratio >= 1.5 ? ' title="carries ≥1.5× the baseline\'s parameters at the same compute — the iso-FLOP budget permits this; read the win accordingly"' : ""
           }>${n.params_ratio.toFixed(2)}×</span>` },
     { k: "runtime_s", label: "runtime", num: true, get: (n) => n.runtime_s, cell: (n) => fmtRuntime(n.runtime_s) },
     { k: "gpu", label: "GPU", num: false, get: (n) => (n.gpu && n.gpu.name) || "", cell: (n) => fmtGpu(n.gpu) },

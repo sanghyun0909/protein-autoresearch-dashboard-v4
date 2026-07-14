@@ -4,7 +4,6 @@
     "kind": "esm2",
     "size": "8M",
     "params": 7408960,
-    "anchor": false,
     "metrics": {
       "ec.micro_auprc": 0.6391744832746513,
       "ec.fmax": 0.6117426454301281,
@@ -21,7 +20,6 @@
     "kind": "esm2",
     "size": "35M",
     "params": 33269280,
-    "anchor": true,
     "metrics": {
       "ec.micro_auprc": 0.7651297625269297,
       "ec.fmax": 0.7327262540771928,
@@ -38,7 +36,6 @@
     "kind": "esm2",
     "size": "150M",
     "params": 147728000,
-    "anchor": false,
     "metrics": {
       "ec.micro_auprc": 0.791553973510643,
       "ec.fmax": 0.7513657446431191,
@@ -55,7 +52,6 @@
     "kind": "esm2",
     "size": "650M",
     "params": 649400320,
-    "anchor": false,
     "metrics": {
       "ec.micro_auprc": 0.8357738083480067,
       "ec.fmax": 0.7981893767184199,
@@ -72,7 +68,6 @@
     "kind": "esm2",
     "size": "3B",
     "params": 2832400000,
-    "anchor": false,
     "metrics": {
       "ec.micro_auprc": 0.8645478317623192,
       "ec.fmax": 0.8341518952742627,
@@ -86,7 +81,6 @@
     "label": "#129 (ours, 72M, scratch 20B)",
     "kind": "ours",
     "params": 72000000,
-    "anchor": false,
     "steps": 19074.0,
     "tokens": 20000538624.0,
     "metrics": {
