@@ -24,10 +24,15 @@ const FAMILY_PALETTE = [
   "#2563eb", "#16a34a", "#d4a017", "#dc2626", "#7c3aed", "#0891b2",
   "#ea580c", "#db2777", "#65a30d", "#0d9488", "#4f46e5", "#b45309",
 ];
-// ESM-2 baseline reference lines, indexed small->large (violet ramp, distinct from the node/anchor colors).
+// Provenance-driven reference styling:
+//  * OFFICIAL pretrained ESM-2 (all 5 sizes) = ONE consistent DASHED style, small->large violet ramp. The
+//    35M rung is NOT special-cased — it is just one rung of the official ladder (the anchor semantically).
+//  * OUR from-scratch scale-up runs = SOLID lines in a distinct warm ramp (amber, red), so provenance
+//    (official weights vs our 20B-from-scratch) is obvious at a glance and the 35M CONTROL is unmistakably
+//    distinct from the official 35M.
 const BASELINE_RAMP = ["#c4b5fd", "#a78bfa", "#8b5cf6", "#7c3aed", "#5b21b6"];
-// OUR from-scratch scale-up markers — amber, deliberately distinct from the official ESM violet ladder.
-const OURS_COLOR = "#d97706";
+const OURS_RAMP = ["#d97706", "#dc2626"];  // #129 = amber, 35M-control = red
+const OURS_COLOR = OURS_RAMP[0];  // legend swatch
 const familyColor = {};
 function colorForFamily(f) {
   if (!(f in familyColor)) familyColor[f] = FAMILY_PALETTE[Object.keys(familyColor).length % FAMILY_PALETTE.length];
@@ -146,36 +151,45 @@ function renderMetricPlot(data, key) {
 
   const shapes = [], anns = [];
   const maxX = Math.max(1, ...nodes.map((n) => n.id));
-  if (anchor != null) {
+  const baselines = data.baselines || [];
+  const hasEsm = baselines.some((b) => b.kind === "esm2" && b.metrics && b.metrics[key] != null);
+  // The old single dashed anchor line is REDUNDANT once the official ladder is drawn (35M is one of its
+  // rungs); draw it only when there is no ESM ladder for this metric (backward compatible).
+  if (anchor != null && !hasEsm) {
     shapes.push({ type: "line", x0: 0, x1: maxX, y0: anchor, y1: anchor,
       line: { color: COL.anchor, width: 1.6, dash: "dash" } });
     anns.push({ x: 0, y: anchor, text: `  ESM-2 35M anchor = ${anchor}`, showarrow: false,
       font: { size: 11, color: COL.anchor }, xanchor: "left", yanchor: "bottom" });
   }
-  // Reference ladder (data.baselines):
-  //  - kind "esm2": the OFFICIAL pretrained ESM-2 at several sizes through THIS same probe — the scaling
-  //    ladder the search is measured against. Thin dotted violet lines, small->large color ramp, labels at
-  //    the RIGHT. The 35M rung IS the dashed anchor line above, so its entry (anchor:true) is skipped here.
-  //  - kind "ours": OUR from-scratch scale-up models — amber SOLID lines, labels at the LEFT, so they read
-  //    as a distinct family from the official ESM points. A baseline with no value for the selected metric
-  //    is simply omitted.
-  let esmRung = 0;
-  (data.baselines || []).forEach((b) => {
+  // Reference ladder (data.baselines) — provenance is the visual axis:
+  //  - kind "esm2": the OFFICIAL pretrained ESM-2 at all sizes through THIS probe. ONE consistent DASHED
+  //    style, small->large violet ramp, labels at the RIGHT. The 35M rung is NOT special-cased — it is
+  //    drawn like every other official rung (it is the anchor semantically, same official-weights design).
+  //  - kind "ours": OUR from-scratch scale-up runs. SOLID lines, distinct warm ramp, labels at the LEFT.
+  //    A baseline with no value for the selected metric is simply omitted.
+  let esmRung = 0, oursRung = 0;
+  baselines.forEach((b) => {
     const v = b && b.metrics ? b.metrics[key] : null;
-    if (b.anchor || v == null || !isFinite(v)) return;
+    if (v == null || !isFinite(v)) return;
     if (b.kind === "ours") {
+      const c = OURS_RAMP[Math.min(oursRung++, OURS_RAMP.length - 1)];
       shapes.push({ type: "line", x0: 0, x1: maxX, y0: v, y1: v,
-        line: { color: OURS_COLOR, width: 1.8, dash: "solid" } });
+        line: { color: c, width: 2, dash: "solid" } });
       anns.push({ x: 0, y: v, text: `◆ ${esc(b.label)} = ${fmt(v, 3)}  `, showarrow: false,
-        font: { size: 10, color: OURS_COLOR }, xanchor: "left", yanchor: "top" });
+        font: { size: 10, color: c }, xanchor: "left", yanchor: "top" });
     } else {
       const c = BASELINE_RAMP[Math.min(esmRung++, BASELINE_RAMP.length - 1)];
       shapes.push({ type: "line", x0: 0, x1: maxX, y0: v, y1: v,
-        line: { color: c, width: 1.1, dash: "dot" } });
+        line: { color: c, width: 1.3, dash: "dash" } });
       anns.push({ x: maxX, y: v, text: `${esc(b.label)} `, showarrow: false,
         font: { size: 10, color: c }, xanchor: "right", yanchor: "bottom" });
     }
   });
+  // Legend entries making the provenance rule explicit (dummy traces: legend swatch, no plotted points).
+  if (hasEsm) traces.push({ name: "official ESM-2 — pretrained (dashed)", x: [null], y: [null],
+    mode: "lines", line: { color: BASELINE_RAMP[3], width: 1.4, dash: "dash" }, hoverinfo: "skip" });
+  if (baselines.some((b) => b.kind === "ours")) traces.push({ name: "ours — from-scratch (solid)",
+    x: [null], y: [null], mode: "lines", line: { color: OURS_COLOR, width: 2 }, hoverinfo: "skip" });
 
   Plotly.react("metricPlot", traces, {
     paper_bgcolor: COL.panel, plot_bgcolor: COL.panel,

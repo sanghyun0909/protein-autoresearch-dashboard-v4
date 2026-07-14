@@ -1,6 +1,6 @@
 [
   {
-    "label": "ESM-2 8M",
+    "label": "ESM-2 8M (official)",
     "kind": "esm2",
     "size": "8M",
     "params": 7408960,
@@ -17,7 +17,7 @@
     }
   },
   {
-    "label": "ESM-2 35M",
+    "label": "ESM-2 35M (official)",
     "kind": "esm2",
     "size": "35M",
     "params": 33269280,
@@ -34,7 +34,7 @@
     }
   },
   {
-    "label": "ESM-2 150M",
+    "label": "ESM-2 150M (official)",
     "kind": "esm2",
     "size": "150M",
     "params": 147728000,
@@ -51,7 +51,7 @@
     }
   },
   {
-    "label": "ESM-2 650M",
+    "label": "ESM-2 650M (official)",
     "kind": "esm2",
     "size": "650M",
     "params": 649400320,
@@ -68,7 +68,7 @@
     }
   },
   {
-    "label": "ours: #129 (72M, scratch, 20B tok)",
+    "label": "#129 (ours, 72M, scratch 20B)",
     "kind": "ours",
     "params": 72000000,
     "anchor": false,
