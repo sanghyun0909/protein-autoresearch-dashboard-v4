@@ -117,5 +117,18 @@
       "go.fmax": 0.5045594666622135,
       "repsp.auprc": 0.5330315210417349
     }
+  },
+  {
+    "label": "#154 (ours, 56M efficient, scratch 20B)",
+    "kind": "ours",
+    "params": 56000000,
+    "steps": 19074.0,
+    "tokens": 20000538624.0,
+    "metrics": {
+      "ec.micro_auprc": 0.6704376343957117,
+      "ec.fmax": 0.6449895905555624,
+      "go.fmax": 0.5001370545908744,
+      "repsp.auprc": 0.5096633030484177
+    }
   }
 ]

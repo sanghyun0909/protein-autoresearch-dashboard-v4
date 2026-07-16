@@ -31,7 +31,7 @@ const FAMILY_PALETTE = [
 //    (official weights vs our 20B-from-scratch) is obvious at a glance and the 35M CONTROL is unmistakably
 //    distinct from the official 35M.
 const BASELINE_RAMP = ["#c4b5fd", "#a78bfa", "#8b5cf6", "#7c3aed", "#5b21b6"];
-const OURS_RAMP = ["#d97706", "#dc2626", "#0891b2"];  // #129 = amber, 35M-control = red, 150M-control = cyan
+const OURS_RAMP = ["#d97706", "#dc2626", "#0891b2", "#db2777"];  // #129 amber, 35M red, 150M cyan, #154 magenta
 const OURS_COLOR = OURS_RAMP[0];  // legend swatch
 const familyColor = {};
 function colorForFamily(f) {
